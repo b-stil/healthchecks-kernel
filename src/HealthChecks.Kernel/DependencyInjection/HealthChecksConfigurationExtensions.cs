@@ -19,25 +19,25 @@ namespace HealthChecks.Kernel.DependencyInjection
         /// <param name="builder"></param>
         /// <param name="managementPort"></param>
         /// <returns></returns>
-        public static IEndpointConventionBuilder ConfigureHealthCheckMappings(this IEndpointRouteBuilder builder, string managementPort)
+        public static IEndpointConventionBuilder ConfigureHealthCheckMappings(this IEndpointRouteBuilder builder, string managementPort = null)
         {
             builder.MapHealthChecks("/status", new HealthCheckOptions()
             {
                 Predicate = (check) => check.Tags.Contains("basic"),
                 ResponseWriter = WriteResponse
-            }).RequireHost($"*:{managementPort}");
+            });//.RequireHost($"*:{managementPort}");
 
             builder.MapHealthChecks("/status/metrics", new HealthCheckOptions()
             {
                 Predicate = (check) => check.Tags.Contains("metrics"),
                 ResponseWriter = WriteResponse
-            }).RequireHost($"*:{managementPort}");
+            });//.RequireHost($"*:{managementPort}");
 
             return builder.MapHealthChecks("/status/details", new HealthCheckOptions()
             {
                 Predicate = (check) => check.Tags.Contains("details"),
                 ResponseWriter = WriteResponse
-            }).RequireHost($"*:{managementPort}");
+            });//.RequireHost($"*:{managementPort}");
 
         }
 

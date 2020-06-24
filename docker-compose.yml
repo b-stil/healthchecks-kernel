@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+    primaryservice.api:
+      image: ${DOCKER_REGISTRY-}primaryserviceapi
+      container_name: "primaryservice-api"
+      build:
+        context: .
+        dockerfile: example/PrimaryService/Dockerfile
+      depends_on:
+        - primaryservice.database
+        - secondaryservice.api
+
+    primaryservice.database:
+      image: mcr.microsoft.com/mssql/server:2017-latest
+      container_name: "primaryservice-db"
+      
+    secondaryservice.api:
+      image: ${DOCKER_REGISTRY-}secondaryserviceapi
+      container_name: "secondaryservice-api"
+      build:
+        context: .
+        dockerfile: example/SecondaryService/Dockerfile
+      depends_on:
+        - secondaryservice.database
+
+    secondaryservice.database:
+      image: mcr.microsoft.com/mssql/server:2017-latest
+      container_name: "secondaryservice-db"
